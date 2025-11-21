@@ -1,0 +1,28 @@
+{
+  "meta": {
+    "id": "looker-custom-viz-template",
+    "title": "Custom Viz Template",
+    "description": "A comprehensive starter template for building Looker custom visualizations using React 18 and TypeScript.",
+    "version": "v1.0.0",
+    "author": "Looker",
+    "repoUrl": "https://github.com/looker-open-source/looker-custom-viz-v2",
+    "tags": ["React", "TypeScript", "Template"],
+    "category": "Template"
+  },
+  "samples": {
+    "data": [
+      { "count": { "value": 100 }, "label": { "value": "A" } },
+      { "count": { "value": 200 }, "label": { "value": "B" } }
+    ],
+    "config": {
+      "title_text": "My Template Visualization"
+    },
+    "queryResponse": {
+      "fields": {
+        "dimensions": [{ "name": "label" }],
+        "measures": [{ "name": "count" }]
+      },
+      "pivots": []
+    }
+  }
+}
