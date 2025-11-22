@@ -2,3 +2,5 @@ node_modules/
 .DS_STORE
 package-lock.json
 dist/
+server.log
+*.log
