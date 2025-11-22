@@ -1,54 +1,39 @@
-import React from 'react'
+import React, { useMemo } from 'react';
 import { useViz } from './VizContext';
-import { DrillableCell } from './DrillableCell';
-import { Cell } from '../types';
+import { BarChart } from './BarChart';
+import { ParentSize } from '@visx/responsive';
+import { extractBarChartData } from '../utils/data_transforms';
 
 const LookerCustomVizLayout: React.FC = () => {
-  const { data, config } = useViz();
+    const { data, config, queryResponse } = useViz();
 
-  if(!config || !data) {
-    return <div>Loading...</div>
-  }
+    const chartData = useMemo(() => {
+        return extractBarChartData(data, queryResponse);
+    }, [data, queryResponse]);
 
-  // Extract headers from the first row for the table
-  const headers = data.length > 0 ? Object.keys(data[0]) : [];
-  
-  return (
-    <div className="viz-container">
-        <h1>{config.title_text}</h1>
-        <div className="info-box">
-            <p><strong>Row Count:</strong> {data.length}</p>
-            <p>This is a minimal React template for Looker Custom Visualizations.</p>
-            <p>Click on blue values to test the <strong>openDrillMenu</strong> functionality.</p>
-        </div>
-        {data.length > 0 ? (
-            <div className="data-preview" style={{ overflowX: 'auto' }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '10px' }}>
-                    <thead>
-                        <tr style={{ borderBottom: '2px solid #eee' }}>
-                            {headers.map(header => (
-                                <th key={header} style={{ padding: '8px', textAlign: 'left' }}>{header}</th>
-                            ))}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {data.map((row, index) => (
-                            <tr key={index} style={{ borderBottom: '1px solid #eee' }}>
-                                {headers.map(header => (
-                                    <td key={header} style={{ padding: '8px' }}>
-                                        <DrillableCell cell={row[header] as Cell} />
-                                    </td>
-                                ))}
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+    if (!config || !data || chartData.length === 0) {
+        return (
+            <div style={{ padding: '20px', fontFamily: 'sans-serif' }}>
+                <h3>Waiting for data...</h3>
+                <p>Please select at least one dimension and one measure.</p>
             </div>
-        ) : (
-            <div className="data-preview">No data available</div>
-        )}
-    </div>
-  );
+        );
+    }
+
+    return (
+        <div
+            className="viz-container"
+            style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}
+        >
+            {config.title_text && <h2 style={{ textAlign: 'center', margin: '10px 0' }}>{config.title_text}</h2>}
+
+            <div style={{ flex: 1, minHeight: 0 }}>
+                <ParentSize>
+                    {({ width, height }) => <BarChart width={width} height={height} data={chartData} />}
+                </ParentSize>
+            </div>
+        </div>
+    );
 };
 
 export { LookerCustomVizLayout };
