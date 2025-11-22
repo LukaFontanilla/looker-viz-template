@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 
 const PATHS = {
-  app: path.join(__dirname, 'src/custom_viz_container.tsx'),
-}
+    app: path.join(__dirname, 'src/custom_viz_container.tsx'),
+};
 
 var webpackConfig = {
     mode: 'production',
@@ -28,7 +29,7 @@ var webpackConfig = {
         hot: true,
         https: true,
         static: {
-          directory: path.join(__dirname, 'dist'),
+            directory: path.join(__dirname, 'dist'),
         },
     },
     module: {
@@ -38,19 +39,19 @@ var webpackConfig = {
             {
                 test: /\.(png|jpe?g|gif)$/i,
                 use: [
-                  {
-                    loader: 'file-loader',
-                  },
+                    {
+                        loader: 'file-loader',
+                    },
                 ],
-              },
+            },
             { test: /\.css$/, use: ['style-loader', 'css-loader'] },
         ],
     },
     performance: {
         hints: false,
         maxEntrypointSize: 512000,
-        maxAssetSize: 512000
-    }
+        maxAssetSize: 512000,
+    },
 };
 
 module.exports = webpackConfig;
